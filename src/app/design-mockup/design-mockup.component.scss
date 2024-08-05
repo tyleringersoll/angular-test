@@ -1,0 +1,23 @@
+p {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.25rem;
+}
+
+ol {
+  li {
+    margin: 1rem 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.25rem;
+  }
+}
+
+.container {
+  padding-top: 1.25rem;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}

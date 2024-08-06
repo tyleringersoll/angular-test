@@ -1,7 +1,12 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { TodoItem } from '../models/models';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+
+interface ToDoItem {
+  id: number;
+  title: string;
+  completed: boolean;
+}
 
 @Component({
   selector: 'app-finished-to-do-list',
@@ -62,7 +67,7 @@ import { CommonModule } from '@angular/common';
           [(ngModel)]="newToDo"
           id="todoInput"
           placeholder=" "
-          (keyup.enter)="addTodo()"
+          (keyup.enter)="addToDo()"
         />
         <label for="todoInput">Add a new to-do item</label>
       </div>
@@ -71,7 +76,7 @@ import { CommonModule } from '@angular/common';
 
     <main class="container">
       <ul>
-        <li *ngFor="let todo of todos">
+        <li *ngFor="let todo of toDoList">
           <input [id]="todo.id" type="checkbox" [(ngModel)]="todo.completed" />
           <label [for]="todo.id" [class.completed]="todo.completed">{{
             todo.title
@@ -87,7 +92,7 @@ export class FinishedToDoListComponent implements OnChanges {
   title: string = '';
 
   @Input()
-  todos: TodoItem[] = [];
+  toDoList: ToDoItem[] = [];
 
   newToDo: string = '';
   nextId: number = 0;
@@ -97,14 +102,14 @@ export class FinishedToDoListComponent implements OnChanges {
   }
 
   updateNextId(): void {
-    const maxId = this.todos.reduce((max, todo) => Math.max(max, todo.id), -1);
+    const maxId = this.toDoList.reduce((max, todo) => Math.max(max, todo.id), -1);
     this.nextId = maxId + 1;
   }
 
-  addTodo(): void {
+  addToDo(): void {
     if (!this.newToDo.trim()) return;
 
-    this.todos.push({
+    this.toDoList.push({
       id: this.nextId++,
       title: this.newToDo,
       completed: false,
@@ -114,12 +119,12 @@ export class FinishedToDoListComponent implements OnChanges {
   }
 
   sortToDos(): void {
-    this.todos.sort((a, b) =>
+    this.toDoList.sort((a, b) =>
       a.title.localeCompare(b.title, undefined, { sensitivity: 'base' })
     );
   }
 
   deleteToDo(id: number): void {
-    this.todos = this.todos.filter((todo) => todo.id !== id);
+    this.toDoList = this.toDoList.filter((todo) => todo.id !== id);
   }
 }

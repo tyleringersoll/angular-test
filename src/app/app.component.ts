@@ -3,9 +3,13 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 import { ToDoListComponent } from './to-do-list/to-do-list.component';
-import { TodoItem } from './models/models';
 import { DesignMockupComponent } from './design-mockup/design-mockup.component';
 
+interface ToDoItem {
+  id: number;
+  title: string;
+  completed: boolean;
+}
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -21,7 +25,7 @@ import { DesignMockupComponent } from './design-mockup/design-mockup.component';
 })
 export class AppComponent {
   title = 'my to-do list';
-  todos: TodoItem[] = [
+  todos: ToDoItem[] = [
     {
       id: 0,
       title: 'create to-do list',

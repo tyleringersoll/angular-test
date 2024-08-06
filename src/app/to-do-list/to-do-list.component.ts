@@ -1,7 +1,12 @@
-import { Component, Input, OnChanges } from '@angular/core';
-import { TodoItem } from '../models/models';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Component, Input, OnChanges } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+interface ToDoItem {
+  id: number;
+  title: string;
+  completed: boolean;
+}
 
 @Component({
   selector: 'app-to-do-list',
@@ -29,7 +34,7 @@ import { CommonModule } from '@angular/common';
           [(ngModel)]="newToDo"
           id="todoInput"
           placeholder=" "
-          (keyup.enter)="addTodo()"
+          (keyup.enter)="addToDo()"
         />
         <label for="todoInput">Add a new to-do item</label>
       </div>
@@ -38,11 +43,13 @@ import { CommonModule } from '@angular/common';
 
     <main class="container">
       <ul>
-        <li *ngFor="let todo of todos">
+        <li *ngFor="let todo of toDoList" class="todo-item">
           <input [id]="todo.id" type="checkbox" [(ngModel)]="todo.completed" />
-          <label [for]="todo.id" [class.completed]="todo.completed">{{
-            todo.title
-          }}</label>
+
+          <label [for]="todo.id" [class.completed]="todo.completed">
+            {{ todo.title }}
+          </label>
+
           <button class="delete-button" (click)="deleteToDo(todo.id)">
             Delete
           </button>
@@ -52,28 +59,28 @@ import { CommonModule } from '@angular/common';
   `,
 })
 export class ToDoListComponent implements OnChanges {
-  @Input()
-  title: string = '';
-
-  @Input()
-  todos: TodoItem[] = [];
-
   newToDo: string = '';
   nextId: number = 0;
+
+  @Input() title: string = '';
+  @Input() toDoList: ToDoItem[] = [];
 
   ngOnChanges(): void {
     this.updateNextId();
   }
 
   updateNextId(): void {
-    const maxId = this.todos.reduce((max, todo) => Math.max(max, todo.id), -1);
+    const maxId = this.toDoList.reduce(
+      (max, todo) => Math.max(max, todo.id),
+      -1
+    );
     this.nextId = maxId + 1;
   }
 
-  addTodo(): void {
+  addToDo(): void {
     if (!this.newToDo.trim()) return;
 
-    this.todos.push({
+    this.toDoList.push({
       id: this.nextId++,
       title: this.newToDo,
       completed: false,
